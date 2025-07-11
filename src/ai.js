@@ -39,7 +39,10 @@ export async function getRecipeFromChefClaude(ingredientsArr) {
 
 // Make sure you set an environment variable in Scrimba 
 // for HF_ACCESS_TOKEN
-const hf = new InferenceClient("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")
+require('dotenv').config();
+const access_token = process.env.ACCESS_TOKEN;
+
+const hf = new InferenceClient(access_token)
 
 export async function getRecipeFromMistral(ingredientsArr) {
     const ingredientsString = ingredientsArr.join(", ")
