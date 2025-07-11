@@ -1,12 +1,18 @@
 import React from "react"
+import ClaudeRecipe from "./components/ClaudeRecipe"
+import IngredientsList from "./components/IngredientsList"
+import { getRecipeFromChefClaude, getRecipeFromMistral } from "./ai"
 
 function Form() {
     const [ingredients, setIngredients] = React.useState([])
-    const ingredientListItems = ingredients.map((ingredient, index) => <li key={index}>{ingredient}</li>)
+    const [recipeShown, setRecipeShown] = React.useState(false)
 
     function chefClaudeForm(formData) {
         const newIngredient = formData.get("ingredient")
         setIngredients(prevIngredient => [...prevIngredient, newIngredient])
+    }
+    function isRecipeShown() {
+        setRecipeShown(prev => !prev)
     }
     return (
         <main>
@@ -19,17 +25,11 @@ function Form() {
                 />
                 <button>Add ingredient</button>
             </form>
-            {ingredients.length > 0 && <section>
-                <h2>Ingredients on hand:</h2>
-                <ul className="ingredients-list" aria-live="polite">{ingredientListItems}</ul>
-                {ingredients.length > 3 ? <div className="get-recipe-container">
-                    <div>
-                        <h3>Ready for a recipe?</h3>
-                        <p>Generate a recipe from your list of ingredients.</p>
-                    </div>
-                    <button>Get a recipe</button>
-                </div> : null}
-            </section>}
+            {ingredients.length > 0 && <IngredientsList 
+                ingredients={ingredients} 
+                recipeShown={isRecipeShown}
+            />}
+            {recipeShown && <ClaudeRecipe />}
         </main>
     )
 }
