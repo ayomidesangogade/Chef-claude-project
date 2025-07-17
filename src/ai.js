@@ -16,33 +16,33 @@ You are an assistant that receives a list of ingredients that a user has and sug
 // your API calls can be made. Doing so will keep your
 // API keys private.
 
-const anthropic = new Anthropic({
-    // Make sure you set an environment variable in Scrimba 
-    // for ANTHROPIC_API_KEY
-    apiKey: process.env.ANTHROPIC_API_KEY,
-    dangerouslyAllowBrowser: true,
-})
+// const anthropic = new Anthropic({
+//     // Make sure you set an environment variable in Scrimba 
+//     // for ANTHROPIC_API_KEY
+//     apiKey: process.env.ANTHROPIC_API_KEY,
+//     dangerouslyAllowBrowser: true,
+// })
 
-export async function getRecipeFromChefClaude(ingredientsArr) {
-    const ingredientsString = ingredientsArr.join(", ")
+// export async function getRecipeFromChefClaude(ingredientsArr) {
+//     const ingredientsString = ingredientsArr.join(", ")
 
-    const msg = await anthropic.messages.create({
-        model: "claude-3-haiku-20240307",
-        max_tokens: 1024,
-        system: SYSTEM_PROMPT,
-        messages: [
-            { role: "user", content: `I have ${ingredientsString}. Please give me a recipe you'd recommend I make!` },
-        ],
-    });
-    return msg.content[0].text
-}
+//     const msg = await anthropic.messages.create({
+//         model: "claude-3-haiku-20240307",
+//         max_tokens: 1024,
+//         system: SYSTEM_PROMPT,
+//         messages: [
+//             { role: "user", content: `I have ${ingredientsString}. Please give me a recipe you'd recommend I make!` },
+//         ],
+//     });
+//     return msg.content[0].text
+// }
 
 // Make sure you set an environment variable in Scrimba 
 // for HF_ACCESS_TOKEN
-require('dotenv').config();
-const access_token = process.env.ACCESS_TOKEN;
+// require('dotenv').config();
+// const access_token = process.env.ACCESS_TOKEN;
 
-const hf = new InferenceClient(access_token)
+const hf = new InferenceClient("")
 
 export async function getRecipeFromMistral(ingredientsArr) {
     const ingredientsString = ingredientsArr.join(", ")

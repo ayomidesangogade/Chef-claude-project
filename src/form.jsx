@@ -1,18 +1,22 @@
 import React from "react"
 import ClaudeRecipe from "./components/ClaudeRecipe"
 import IngredientsList from "./components/IngredientsList"
-import { getRecipeFromChefClaude, getRecipeFromMistral } from "./ai"
+import { getRecipeFromMistral } from "./ai"
 
 function Form() {
     const [ingredients, setIngredients] = React.useState([])
-    const [recipeShown, setRecipeShown] = React.useState(false)
+    const [recipeShown, setRecipeShown] = React.useState("")
+    const [loading, setLoading] = React.useState(false)
 
     function chefClaudeForm(formData) {
         const newIngredient = formData.get("ingredient")
         setIngredients(prevIngredient => [...prevIngredient, newIngredient])
     }
-    function isRecipeShown() {
-        setRecipeShown(prev => !prev)
+    async function fetchRecipe() {
+        setLoading(true)
+        const result = await getRecipeFromMistral(ingredients)
+        setRecipeShown(result)
+        setLoading(false)
     }
     return (
         <main>
@@ -27,9 +31,10 @@ function Form() {
             </form>
             {ingredients.length > 0 && <IngredientsList 
                 ingredients={ingredients} 
-                recipeShown={isRecipeShown}
+                recipeShown={fetchRecipe}
+                loading={loading}
             />}
-            {recipeShown && <ClaudeRecipe />}
+            {recipeShown && <ClaudeRecipe htmlContent={recipeShown} />}
         </main>
     )
 }
