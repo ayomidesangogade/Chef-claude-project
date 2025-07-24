@@ -7,11 +7,17 @@ function Form() {
     const [ingredients, setIngredients] = React.useState([])
     const [recipeShown, setRecipeShown] = React.useState("")
     const [loading, setLoading] = React.useState(false)
+    const recipeSection = React.useRef(null)
 
     function chefClaudeForm(formData) {
         const newIngredient = formData.get("ingredient")
         setIngredients(prevIngredient => [...prevIngredient, newIngredient])
     }
+
+    React.useEffect(() => {
+        recipeShown !== "" && recipeSection.current !== null ? recipeSection.current.scrollIntoView({behavior : "smooth"}) : undefined
+    }, [recipeShown])
+
     async function fetchRecipe() {
         setLoading(true)
         const result = await getRecipeFromMistral(ingredients)
@@ -29,7 +35,8 @@ function Form() {
                 />
                 <button>Add ingredient</button>
             </form>
-            {ingredients.length > 0 && <IngredientsList 
+            {ingredients.length > 0 && <IngredientsList
+                ref={recipeSection}
                 ingredients={ingredients} 
                 recipeShown={fetchRecipe}
                 loading={loading}
